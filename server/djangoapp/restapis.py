@@ -2,7 +2,7 @@
 # import requests
 import os
 from dotenv import load_dotenv
-import requests 
+import requests
 
 load_dotenv()
 
@@ -15,7 +15,7 @@ sentiment_analyzer_url = os.getenv(
 # def get_request(endpoint, **kwargs):
 def get_request(endpoint, **kwargs):
     params = ""
-    if(kwargs):
+    if (kwargs):
         for key,value in kwargs.items():
             params=params+key+"="+value+"&"
 
@@ -26,7 +26,7 @@ def get_request(endpoint, **kwargs):
         # Call get method of requests library with URL and parameters
         response = requests.get(request_url)
         return response.json()
-    except:
+    except Exceptin as err:
         # If any error occurs
         print("Network exception occurred")
 
