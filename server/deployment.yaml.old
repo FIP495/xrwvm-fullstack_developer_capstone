@@ -17,6 +17,6 @@ spec:
           image: localhost:5000/fpdealership:latest
           imagePullPolicy: Always
           ports:
-          - containerPort: 8000
-            hostPort: 8000
+          - containerPort: 8080
+            hostPort: 8080
             
