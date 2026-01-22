@@ -12,13 +12,31 @@ app.use(require('body-parser').urlencoded({ extended: false }));
 const reviews_data = JSON.parse(fs.readFileSync("reviews.json", 'utf8'));
 const dealerships_data = JSON.parse(fs.readFileSync("dealerships.json", 'utf8'));
 
-mongoose.connect("mongodb://mongo_db:27017/",{'dbName':'dealershipsDB'});
+const mongoHost = process.env.MONGO_HOST || "localhost";
+mongoose.connect(`mongodb://${mongoHost}:27017/`,{'dbName':'dealershipsDB'})
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error("MongoDB connection error: ", err));
 
 
 const Reviews = require('./review');
 
 const Dealerships = require('./dealership');
 
+(async () => {
+  try {
+    await Reviews.deleteMany({});
+    await Reviews.insertMany(reviews_data.reviews);
+
+    await Dealerships.deleteMany({});
+    await Dealerships.insertMany(dealerships_data.dealerships);
+
+    console.log("Collections initialized successfully");
+  } catch (error) {
+    console.error("Error initializing collections:", error);
+  }
+})();
+
+/*
 try {
   Reviews.deleteMany({}).then(()=>{
     Reviews.insertMany(reviews_data.reviews);
@@ -30,6 +48,7 @@ try {
 } catch (error) {
   res.status(500).json({ error: 'Error fetching documents' });
 }
+*/
 
 
 // Express route to home
